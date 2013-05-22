@@ -1,0 +1,1 @@
+#define WS_MSVC_NORETURN
