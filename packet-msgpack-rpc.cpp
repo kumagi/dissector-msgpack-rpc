@@ -239,7 +239,7 @@ gboolean heur_dissect_msgpack(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
     col_set_str(pinfo->cinfo, COL_INFO, rpc_info[type]);
     {
       const guint length = tvb_reported_length(tvb);
-      guint8* const buff = (guint8*)tvb_memdup(tvb, 0, length);
+      const guint8* const buff = (guint8*)tvb_get_ptr(tvb, 0, length);
       msgpack::unpacker unp(length);
       int offset = 1;
       memcpy(unp.buffer(), &buff[offset], length - offset);
@@ -248,7 +248,6 @@ gboolean heur_dissect_msgpack(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tre
       for (int i=0; i<matrix_size[type]; ++i) {
         offset += msg_matrix[type][i].parse_and_add(unp, ti, tvb, offset);
       }
-      g_free(buff);
     }
     assert(0 <= type && type <= 2);
   }
